@@ -1,5 +1,5 @@
 let bodyParser = require("body-parser");
-let mangoose = require("mongoose");
+let mongoose = require("mongoose");
 let logger = require("morgan");
 
 let express = require("express");
