@@ -6,10 +6,6 @@ let ArticleSchema = new Schema({
     type: String,
     required: true
   },
-  summary: {
-    type: String,
-    ref: "Summary"
-  },
   link: {
     type: String,
     required: true
@@ -24,4 +20,4 @@ let ArticleSchema = new Schema({
 
 let Article = mongoose.model("Article", ArticleSchema);
 
-module.exports = Articles;
+module.exports = Article;

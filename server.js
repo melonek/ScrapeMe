@@ -18,12 +18,12 @@ let exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-mongoose.connect("mongodb://localhost/scrape_me");
+mongoose.connect("mongodb://localhost/scrape");
 let db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function() {
-  console.log("Conected to Mongoose!");
+  console.log("Connected to Mongoose!");
 });
 
 let port = process.env.PORT || 3000;
