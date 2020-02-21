@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Dcoxmen/scraper_news.git"
+    "url": "git+https://github.com/melonek/ScrapeMe.git"
   },
   "author": "DCox",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Dcoxmen/scraper_news/issues"
+    "url": "https://github.com/melonek/ScrapeMe/issues"
   },
-  "homepage": "https://github.com/Dcoxmen/scraper_news#readme",
+  "homepage": "https://github.com/melonek/ScrapeMe#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "cheerio": "^1.0.0-rc.2",
