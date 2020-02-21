@@ -1,12 +1,12 @@
-var express = require("express");
-var router = express.Router();
-var path = require("path");
+let express = require("express");
+let router = express.Router();
+let path = require("path");
 
-var request = require("request");
-var cheerio = require("cheerio");
+let request = require("request");
+let cheerio = require("cheerio");
 
-var Comment = require("../models/Comment.js");
-var Article = require("../models/Article.js");
+let Comment = require("../models/Comment.js");
+let Article = require("../models/Article.js");
 
 router.get("/", function(req, res) {
   res.redirect("/articles");
@@ -14,11 +14,11 @@ router.get("/", function(req, res) {
 
 router.get("/scrape", function(req, res) {
   request("https://www.9news.com.au/perth", function(error, response, html) {
-    var $ = cheerio.load(html);
-    var titlesArray = [];
+    let $ = cheerio.load(html);
+    let titlesArray = [];
 
     $(".story__headline").each(function(i, element) {
-      var result = {};
+      let result = {};
 
       result.title = $(this)
         .children("a")
@@ -33,7 +33,7 @@ router.get("/scrape", function(req, res) {
 
           Article.count({ title: result.title }, function(err, test) {
             if (test === 0) {
-              var entry = new Article(result);
+              let entry = new Article(result);
 
               entry.save(function(err, doc) {
                 if (err) {
@@ -61,7 +61,7 @@ router.get("/articles", function(req, res) {
       if (err) {
         console.log(err);
       } else {
-        var artcl = { article: doc };
+        let artcl = { article: doc };
         res.render("index", artcl);
       }
     });
@@ -89,8 +89,8 @@ router.get("/clearAll", function(req, res) {
 });
 
 router.get("/readArticle/:id", function(req, res) {
-  var articleId = req.params.id;
-  var hbsObj = {
+  let articleId = req.params.id;
+  let hbsObj = {
     article: [],
     body: []
   };
@@ -102,9 +102,9 @@ router.get("/readArticle/:id", function(req, res) {
         console.log("Error: " + err);
       } else {
         hbsObj.article = doc;
-        var link = doc.link;
+        let link = doc.link;
         request(link, function(error, response, html) {
-          var $ = cheerio.load(html);
+          let $ = cheerio.load(html);
 
           $(".story__wrapper").each(function(i, element) {
             hbsObj.body = $(this)
@@ -119,16 +119,16 @@ router.get("/readArticle/:id", function(req, res) {
     });
 });
 router.post("/comment/:id", function(req, res) {
-  var user = req.body.name;
-  var content = req.body.comment;
-  var articleId = req.params.id;
+  let user = req.body.name;
+  let content = req.body.comment;
+  let articleId = req.params.id;
 
-  var commentObj = {
+  let commentObj = {
     name: user,
     body: content
   };
 
-  var newComment = new Comment(commentObj);
+  let newComment = new Comment(commentObj);
 
   newComment.save(function(err, doc) {
     if (err) {
