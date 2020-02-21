@@ -1,8 +1,8 @@
-let mongoose = require("mongoose");
+var mongoose = require("mongoose");
 
-let Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-let CommentSchema = new Schema({
+var CommentSchema = new Schema({
   name: {
     type: String
   },
@@ -11,7 +11,5 @@ let CommentSchema = new Schema({
     required: true
   }
 });
-
-let Comment = mongoose.model("Comment", CommentSchema);
-
+var Comment = mongoose.model("Comment", CommentSchema);
 module.exports = Comment;
