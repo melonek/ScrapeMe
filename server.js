@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 //dependencies
 let bodyParser = require("body-parser");
 let mongoose = require("mongoose");

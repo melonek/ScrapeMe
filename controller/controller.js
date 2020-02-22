@@ -106,10 +106,15 @@ router.get("/readArticle/:id", function(req, res) {
         request(link, function(error, response, html) {
           let $ = cheerio.load(html);
 
-          $(".story__wrapper").each(function(i, element) {
+          const regex = /<.*?>/g;
+
+          $(".article").each(function(i, element) {
             hbsObj.body = $(this)
-              .children(".story__abstract")
-              .text();
+              .children(".article__body")
+              .text()
+              .replace(regex, "");
+
+            console.log(hbsObj.body);
 
             res.render("article", hbsObj);
             return false;
