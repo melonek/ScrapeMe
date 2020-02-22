@@ -1,4 +1,4 @@
-require("dotenv").config();
+let dotEnv = require("dotenv").config();
 
 //dependencies
 let bodyParser = require("body-parser");
@@ -31,7 +31,7 @@ app.set("view engine", "handlebars");
 //mongoose.connect("mongodb://localhost/scraped_news");
 const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost/scraper_news";
-mongoose.connect(MONGODB_URI + "/scraper_news", { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 let db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));

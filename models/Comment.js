@@ -1,4 +1,4 @@
-let mongoose = require("mongoose");
+var mongoose = require("mongoose");
 
 let Schema = mongoose.Schema;
 
@@ -7,6 +7,10 @@ let CommentSchema = new Schema({
     type: String
   },
   body: {
+    type: String,
+    required: true
+  },
+  articleId: {
     type: String,
     required: true
   }

@@ -88,73 +88,48 @@ router.get("/clearAll", function(req, res) {
   res.redirect("/articles-json");
 });
 
-router.get("/readArticle/:id", function(req, res) {
+router.get("/readArticle/:id", async function(req, res) {
   let articleId = req.params.id;
   let hbsObj = {
     article: [],
     body: []
   };
 
-  Article.findOne({ _id: articleId })
-    .populate("comment")
-    .exec(function(err, doc) {
-      if (err) {
-        console.log("Error: " + err);
-      } else {
-        hbsObj.article = doc;
-        let link = doc.link;
-        request(link, function(error, response, html) {
-          let $ = cheerio.load(html);
-
-          const regex = /<.*?>/g;
-
-          $(".article").each(function(i, element) {
-            hbsObj.body = $(this)
-              .children(".article__body")
-              .text()
-              .replace(regex, "");
-
-            console.log(hbsObj.body);
-
-            res.render("article", hbsObj);
-            return false;
-          });
-        });
-      }
-    });
-});
-router.post("/comment/:id", function(req, res) {
-  let user = req.body.name;
-  let content = req.body.comment;
-  let articleId = req.params.id;
-
-  let commentObj = {
-    name: user,
-    body: content
+  let foundArticle = await Article.findOne({ _id: articleId });
+  let foundComments = await Comment.find({ articleId });
+  hbsObj.article = {
+    _id: foundArticle._id,
+    title: foundArticle.title,
+    comment: foundComments
   };
+  let link = foundArticle.link;
 
-  let newComment = new Comment(commentObj);
+  request(link, function(error, response, html) {
+    let $ = cheerio.load(html);
 
-  newComment.save(function(err, doc) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(doc._id);
-      console.log(articleId);
+    $(".article").each(function(i, element) {
+      hbsObj.body = $(this)
+        .children(".article__body")
+        .text();
 
-      Article.findOneAndUpdate(
-        { _id: req.params.id },
-        { $push: { comment: doc._id } },
-        { new: true }
-      ).exec(function(err, doc) {
-        if (err) {
-          console.log(err);
-        } else {
-          res.redirect("/readArticle/" + articleId);
-        }
-      });
-    }
+      res.render("article", hbsObj);
+      return false;
+    });
   });
+});
+
+router.post("/comment/:id", async function(req, res) {
+  try {
+    let newComment = new Comment({
+      name: req.body.name,
+      body: req.body.comment,
+      articleId: req.params.id
+    });
+    await newComment.save();
+    res.redirect("/readArticle/" + newComment.articleId);
+  } catch (error) {
+    res.json(error);
+  }
 });
 
 module.exports = router;
